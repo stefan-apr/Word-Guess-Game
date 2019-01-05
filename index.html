@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seahawks Hangman</title>
+
+    <!-- Link to CSS Reset -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <!-- Link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Link to Stylesheet-->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Link to jQuery (Used only very sparingly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Link to JavaScript -->
+    <script src="assets/javascript/game.js"></script>
+</head>
+<body>
+<!-- Jumbotron for Title -->
+<div class="jumbotron">
+    <h1 class="text-center">Seattle Seahakws</h1>
+    <h2 class="text-center">Hangman</h2>
+</div>
+
+<div class="container">
+    <div class="row">
+      <!-- Image Card -->
+      <div class="col-lg-6">
+        <div class="card">
+          <h3 class="card-header">Options</h3>
+          <div class="card-body">
+            <h2>Legacy Options</h2> 
+            <h5>Choose "Legacy" to include players active before 2012.</h5>
+            <h5>Choose "Modern" to only include players active after 2012. (Default)</h5>
+            <button id="legacy" class="btn btn-dark" value="Legacy"><h1>Legacy</h1></button>
+            <button id="modern" class="btn btn-dark" value="Modern Era"><h1>Modern Era</h1></button>
+            <br><br>
+            <h2>Difficulty Options</h2>
+            <h5>Choose "Difficult" to bump up the difficulty! You'll get fewer guesses.</h5>
+            <h5>Choose "Normal" to lower the difficulty! You'll get more guesses. (Default)</h5>
+            <button id="difficult" class="btn btn-dark" value="Difficult"><h1>Difficult</h1></button>
+            <button id="normal" class="btn btn-dark" value="Normal"><h1>Normal</h1></button>
+            <br><br>
+            <h2>Hints!</h2>
+            <h5>Choose a hint to display it!</h5>
+            <h5>If you use more than one hint, the game will not count as a win or loss.</h5>
+            <button id="hint-first-name" class="btn btn-dark" value="First Name"><h1 class="">Player's First Name</h1></button>
+            <h3 id="first-name-hint"></h3>
+            <button id="hint-position" class="btn btn-dark" value="Position"><h1 class="">Player's Position</h1></button>
+            <h3 id="position-hint"></h3>
+            <button id="hint-career" class="btn btn-dark" value="Career"><h1 class="">Player's Seahawk Years</h1></button>
+            <h3 id="career-hint"></h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Card -->
+      <div class="col-lg-6">
+        <div class="card">
+          <h3 class="card-header">Game</h3>
+          <div class="card-body">
+            <h1 id="win-or-lose"></h1>
+            <h4 id="any-key">Guess a letter to get started!</h4>
+            <h4 id="wins">Total wins: 0</h4>
+            <h4 id="losses">Total losses: 0</h4>
+            <hr>
+            <img id="player-image" src="assets/images/placeholder.png" alt="This is supposed to be an image of a player"/>
+            <hr>
+            <h4 id="word-header">Current word:</h4>
+            <h4 id="current-word"></h4>
+            <h4 id="guess-header">Number of Guesses Remaining: </h4>
+            <h4 id="current-guesses"></h4>
+            <h4 id="guessed-letters-header">Letters You've Already Guessed: </h4>
+            <h4 id="current-guessed-letters"></h4>
+            <br><br>
+            <button id="reset" class="btn btn-dark clear" value="reset"><h1>Reset Game</h1></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
