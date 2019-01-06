@@ -119,6 +119,9 @@ $(document).ready(function() {
         document.getElementById("career-hint").textContent = "";
         document.getElementById("position-hint").textContent = "";
         document.getElementById("first-name-hint").textContent = "";
+        document.getElementById("win-or-lose").textContent = "";
+        document.getElementById("img-caption").textContent = "";
+        document.getElementById("player-image").src = "assets/images/helmet.jpg";
     }
 
     // Initializes the user's total guesses based on chosen difficulty and the length of the player's name
@@ -126,11 +129,10 @@ $(document).ready(function() {
     function calculateTotalGuesses(seahawk) {
         var nameLen = seahawk.lastName.length;
         if(!difficult) {
-            guessesLeft = Math.ceil(12 - (nameLen * .6));
+            guessesLeft = Math.ceil(11 - (nameLen * .6));
         } else {
-            guessesLeft = Math.ceil(10 - (nameLen * .75));
+            guessesLeft = Math.ceil(9 - (nameLen * .75));
         }
-        console.log("Guesses Updated to " + guessesLeft);
         document.getElementById("current-guesses").textContent = guessesLeft;
     }
 
@@ -138,7 +140,6 @@ $(document).ready(function() {
     function gameOver(winner) {
         guessLock = true;
         if(winner) {
-            console.log("Player won");
             if(hintsUsed.length < 2) {
               totalWins++;
               document.getElementById("wins").textContent = "Wins " + totalWins;
@@ -151,7 +152,9 @@ $(document).ready(function() {
             document.getElementById("losses").textContent = "Losses " + totalLosses;
             document.getElementById("win-or-lose").textContent = "You've Lost...";
         }
-        document.getElementById("any-key").textContent = "Hit reset or change any option to play again!";   
+        document.getElementById("any-key").textContent = "Hit reset or change any option to play again!"; 
+        document.getElementById("img-caption").textContent = selectedPlayer.firstName + " " + selectedPlayer.lastName;
+        document.getElementById("player-image").src = "assets/images/" + selectedPlayer.lastName.toLowerCase() + ".jpg";
     }
 
     // Checks if the passed string is a lowercase letter in the English alphabet using simple regex
@@ -166,10 +169,8 @@ $(document).ready(function() {
             var letter = e.key.toLowerCase();
             if(guessedLetters === "" && isLetter(letter)) {
                 guessedLetters += letter;
-                console.log("Guess of the letter " + letter + " went through");
             } else if(guessedLetters.indexOf(letter) === -1 && isLetter(letter)) {
                 guessedLetters += " " + letter;
-                console.log("Guess of the letter " + letter + " went through");
             } else {
                 validGuess = false;
             }
@@ -181,12 +182,10 @@ $(document).ready(function() {
                   indicesOfGuess.push(position);
                   position = selectedPlayer.lastName.toLowerCase().indexOf(letter, position + 1);
               }
-              console.log(indicesOfGuess);
               // Incorrect Guess
               if(indicesOfGuess.length === 0) {
                   guessesLeft --;
                   document.getElementById("current-guesses").textContent = guessesLeft;
-                  console.log(guessesLeft);
                   // Check if user has any remaining guesses. If not, user has lost
                   if(guessesLeft === 0) {
                       gameOver(false);
@@ -196,7 +195,6 @@ $(document).ready(function() {
               else {
                   indicesOfGuess.forEach(function(index) {
                       wordState[index * 2] = letter;
-                      console.log(wordState);
                       getWordStateForPrinting();
                   });
                   // Check if there are any unguessed letters. If not, user has won
@@ -252,6 +250,7 @@ $(document).ready(function() {
     }
   }
 
+  // Reveals the player's first name
   document.getElementById("hint-first-name").onclick = function() {
     if(hintsUsed.indexOf(1) === -1) {
       hintsUsed.push(1);
@@ -259,6 +258,7 @@ $(document).ready(function() {
     }
   }
 
+  // Reveals the player's football position
   document.getElementById("hint-position").onclick = function() {
     if(hintsUsed.indexOf(2) === -1) {
       hintsUsed.push(2);
@@ -266,6 +266,7 @@ $(document).ready(function() {
     }
   }
 
+  // Reveals the player's career with the Seahawks
   document.getElementById("hint-career").onclick = function() {
     if(hintsUsed.indexOf(3) === -1) {
       hintsUsed.push(3);
@@ -283,10 +284,11 @@ $(document).ready(function() {
 
   // Asks the user if they're okay with resetting the game when picking a change of option
   function confirmWithUser() {
-      var userY = confirm("Changing this setting will reset the game, which will count as a loss if you've guessed any letters. Change anyway?");
+      var userY = confirm("This will reset the game, which will count as a loss if you've guessed any letters. Change anyway?");
       return userY;
   }
 
+  // Adds a loss to the user's tally
   function updateLosees() {
     if(guessedLetters.length !== 0 && !guessLock) {
       totalLosses++;
@@ -294,6 +296,7 @@ $(document).ready(function() {
     }
   }
 
+  // Prints the current word state
   function getWordStateForPrinting() {
     var strToPrint = wordState[0].toUpperCase();
     for(var i = 1; i < wordState.length; i++) {
