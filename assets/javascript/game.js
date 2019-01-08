@@ -209,99 +209,133 @@ $(document).ready(function() {
     // Turns Legacy mode on and resets the game
     document.getElementById("legacy").onclick = function() {
         if(!legacy) {
+            buttonLogic("Legacy");
+        }
+    }
+
+    // Helper function for changing to "Legacy"
+    function changeToLegacy() {
+        legacy = true;
+        regularReset();
+    }
+
+    // Turns Modern Only Mode on and resets the game
+    document.getElementById("modern").onclick = function() {
+        if(legacy) {
+            buttonLogic("Modern");
+        }
+    }
+
+    // Helper function for changing to "Modern Era"
+    function changeToModern() {
+        legacy = false;
+        regularReset();
+    }
+
+   // Changes the difficulty to "Difficult" and resets the game
+    document.getElementById("difficult").onclick = function() {
+        if(!difficult) {
+            buttonLogic("Difficult");
+        }
+    }
+
+    // Helper function for changing to "Difficult"
+    function changeToDifficult() {
+        difficult = true;
+        document.getElementById("hint-first-name").disabled = true;
+        document.getElementById("hint-position").disabled = true;
+        document.getElementById("hint-career").disabled = true;
+        regularReset();
+    }
+
+    // Changes the difficulty to "Normal" and resets the game
+    document.getElementById("normal").onclick = function() {
+        if(difficult) {
+            buttonLogic("Normal");
+        }
+    }
+
+  // Helper function for changing to "Normal"
+    function changeToNormal() {
+        difficult = false;
+        document.getElementById("hint-first-name").disabled = false;
+        document.getElementById("hint-position").disabled = false;
+        document.getElementById("hint-career").disabled = false;
+        regularReset();
+    }
+
+    // Reveals the player's first name
+    document.getElementById("hint-first-name").onclick = function() {
+        if(hintsUsed.indexOf(1) === -1) {
+        hintsUsed.push(1);
+        document.getElementById("first-name-hint").textContent = selectedPlayer.firstName;
+        }
+    }
+
+    // Reveals the player's football position
+    document.getElementById("hint-position").onclick = function() {
+        if(hintsUsed.indexOf(2) === -1) {
+        hintsUsed.push(2);
+        document.getElementById("position-hint").textContent = selectedPlayer.position;
+        }
+    }
+
+    // Reveals the player's career with the Seahawks
+    document.getElementById("hint-career").onclick = function() {
+        if(hintsUsed.indexOf(3) === -1) {
+        hintsUsed.push(3);
+        document.getElementById("career-hint").textContent = selectedPlayer.seahawkCareer;
+        }
+    }
+
+    // Resets the game without changing any settings
+    document.getElementById("reset").onclick = function() {
+        if(guessedLetters.length === 0 || guessLock === true) {
+            regularReset();
+        } else {
             if(confirmWithUser()) {
-                legacy = true;
-                updateLosees();
-                resetGame();
+                regularReset();
             }
         }
     }
 
-    // Turns Modern Only mode on and resets the game
-    document.getElementById("modern").onclick = function() {
-      if(legacy) {
-          if(confirmWithUser()) {
-              legacy = false;
-              updateLosees();
-              resetGame();
-          }
-      }
-   }
+    // Helper function for resetting the game
+    function regularReset() {
+        updateLosses();
+        resetGame();
+    }
 
-   // Changes the difficulty to "Difficult"
-   document.getElementById("difficult").onclick = function() {
-    if(!difficult) {
-        if(confirmWithUser()) {
-            difficult = true;
-            updateLosees();
-            resetGame();
+    // Asks the user if they're okay with resetting the game when picking a change of option
+    function confirmWithUser() {
+        var userY = confirm("This will reset the game, which will count as a loss since you've guessed. Change anyway?");
+        return userY;
+    }
+
+    // Adds a loss to the user's tally
+    function updateLosses() {
+        if(guessedLetters.length !== 0 && !guessLock) {
+        totalLosses++;
+        document.getElementById("losses").textContent = "Losses: " + totalLosses;
         }
     }
-  }
 
-  // Changes the difficulty to "Normal"
-  document.getElementById("normal").onclick = function() {
-    if(difficult) {
-        if(confirmWithUser()) {
-            difficult = false;
-            updateLosees();
-            resetGame();
+    // Prints the current word state
+    function getWordStateForPrinting() {
+        var strToPrint = wordState[0].toUpperCase();
+        for(var i = 1; i < wordState.length; i++) {
+        strToPrint += wordState[i];
         }
+        document.getElementById("current-word").textContent = strToPrint;
     }
-  }
 
-  // Reveals the player's first name
-  document.getElementById("hint-first-name").onclick = function() {
-    if(hintsUsed.indexOf(1) === -1) {
-      hintsUsed.push(1);
-      document.getElementById("first-name-hint").textContent = selectedPlayer.firstName;
+    // Helper function used when pushing any button that changes settings
+    function buttonLogic(whichButton) {
+        if(guessedLetters.length === 0 || guessLock === true) {
+            eval("changeTo" + whichButton + "()");
+        } else {
+            if(confirmWithUser()) {
+                eval("changeTo" + whichButton + "()");
+            }
+        } 
     }
-  }
-
-  // Reveals the player's football position
-  document.getElementById("hint-position").onclick = function() {
-    if(hintsUsed.indexOf(2) === -1) {
-      hintsUsed.push(2);
-      document.getElementById("position-hint").textContent = selectedPlayer.position;
-    }
-  }
-
-  // Reveals the player's career with the Seahawks
-  document.getElementById("hint-career").onclick = function() {
-    if(hintsUsed.indexOf(3) === -1) {
-      hintsUsed.push(3);
-      document.getElementById("career-hint").textContent = selectedPlayer.seahawkCareer;
-    }
-  }
-
-  // Resets the game without changing any settings
-  document.getElementById("reset").onclick = function() {
-    if(confirmWithUser()) {
-      updateLosees();
-      resetGame();
-    }
-  }
-
-  // Asks the user if they're okay with resetting the game when picking a change of option
-  function confirmWithUser() {
-      var userY = confirm("This will reset the game, which will count as a loss if you've guessed any letters. Change anyway?");
-      return userY;
-  }
-
-  // Adds a loss to the user's tally
-  function updateLosees() {
-    if(guessedLetters.length !== 0 && !guessLock) {
-      totalLosses++;
-      document.getElementById("losses").textContent = "Losses: " + totalLosses;
-    }
-  }
-
-  // Prints the current word state
-  function getWordStateForPrinting() {
-    var strToPrint = wordState[0].toUpperCase();
-    for(var i = 1; i < wordState.length; i++) {
-      strToPrint += wordState[i];
-    }
-    document.getElementById("current-word").textContent = strToPrint;
-  }
 });
