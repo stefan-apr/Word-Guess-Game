@@ -11,13 +11,18 @@ The number of starting guesses is determined based on the number of letters in t
 
 The player can choose whether to include "Legacy" Seahawk players, or only "Modern Era" Seahawk players. (Active Seahawks in 2012 or later).
 
-Changing the difficulty level or the "Legacy/Modern Era" setting will result in the game being reset. The user will be prompted of this first.
+(In other words, the "Modern" option is a subset of the "Legacy" option).
+
+Changing the difficulty level or the "Legacy/Modern Era" setting will result in the game being reset. If they have taken any guesses, the user will be prompted of this. Resetting the game after taking a guess will result in a loss.
 
 Three hints are available if the user wants to use them. They are:
 1. The player's first name.
 2. The player's Seahawk career season span.
 3. The player's football position.
+
 If two or three hints are used, the win will not count. 
+
+Hints cannot be used at all if the difficulty is set to "Difficult".
 
 When the game ends, a reset button will appear, and the player can initiate a new game if they want.
 
